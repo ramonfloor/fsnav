@@ -2,9 +2,11 @@
 #define DIRECTORY_H
 
 #include <dirent.h>
+#include<fsnav/structures.h>
 #include <fsnav/buffer.h>
 
-buffer_t* list_directories(buffer_t* dir_list, const char* pathname) {
+
+void list_directories(buffer_t* dir_list, const char* pathname) {
     if(dir_list != NULL) {
         DIR* dir = opendir(pathname);
         if(dir != NULL) {
@@ -16,7 +18,6 @@ buffer_t* list_directories(buffer_t* dir_list, const char* pathname) {
             closedir(dir);
         }
     }
-    return dir_list;
 } 
 
 #endif
