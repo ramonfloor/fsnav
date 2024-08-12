@@ -5,7 +5,21 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-#include<fsnav/structures.h>
+typedef struct buffer_node {
+    struct buffer_node* next;
+    struct buffer_node* prev;
+    void* data;
+} buffer_node_t;
+
+typedef struct buffer {
+    buffer_node_t* head;
+    buffer_node_t* tail;
+} buffer_t;
+
+typedef struct iterator {
+    buffer_node_t* next;
+} iterator;
+
 
 bool empty(const buffer_t* const buffer) {
     return buffer->head == NULL;
@@ -89,7 +103,7 @@ void destroy_iterator(iterator* const iter) {
 }
 
 //going direction tail to head, first element at tail
-buffer_node_t* go_backwards(iterator* const iter) {
+buffer_node_t* next(iterator* const iter) {
     buffer_node_t* return_value = NULL;
     if(iter->next != NULL) {
         buffer_node_t* tmp = iter->next;
@@ -99,24 +113,12 @@ buffer_node_t* go_backwards(iterator* const iter) {
     return return_value;
 }
 
-//going direction head to tail, last element at head
-buffer_node_t* go_forwards(iterator* const iter) {
-    buffer_node_t* return_value = NULL;
-    if(iter->next != NULL) {
-        buffer_node_t* tmp = iter->next;
-        iter->next = tmp->next; //iterator goes forwards
-        return_value = tmp;
-    }
-    return return_value;
-}
-
 void print_buffer(buffer_t* const buffer) {
-    iterator* iter = get_iterator(buffer);
-    if(iter != NULL) {
-        while(iter->next != NULL) {
-            puts(go_backwards(iter)->data);
+    iterator iter = {buffer->tail};
+    if(&iter != NULL) {
+        while(iter.next != NULL) {
+            printf("%p\n", next(&iter)->data);
         }
-        destroy_iterator(iter);
     }
 }
 

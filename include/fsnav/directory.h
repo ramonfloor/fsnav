@@ -2,7 +2,6 @@
 #define DIRECTORY_H
 
 #include <dirent.h>
-#include<fsnav/structures.h>
 #include <fsnav/buffer.h>
 
 
