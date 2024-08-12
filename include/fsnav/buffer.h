@@ -4,11 +4,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+
 
 typedef struct buffer_node {
     struct buffer_node* next;
     struct buffer_node* prev;
     void* data;
+    size_t size;
 } buffer_node_t;
 
 typedef struct buffer {
@@ -21,105 +25,26 @@ typedef struct iterator {
 } iterator;
 
 
-bool empty(const buffer_t* const buffer) {
-    return buffer->head == NULL;
-} 
+bool empty(const buffer_t* const buffer);
 
-bool enqueue(buffer_t* const buffer, void* data) {
-    bool return_value = false;
-    buffer_node_t* node = (buffer_node_t*) malloc(sizeof(buffer_node_t));
-    if(!(node == NULL)) {
-        node->prev = NULL;
-        node->data = data;
-        if(empty(buffer)) {
-            node->next = NULL;
-            buffer->head = node;
-            buffer->tail = node;
-        } else {
-            node->next = buffer->head;
-            buffer->head->prev = node;
-            buffer->head = node;
-        }
-        return_value = true;
-    }
-    return return_value;
-}
+bool enqueue(buffer_t* const buffer, void* data, size_t size);
 
-void* dequeue(buffer_t* const buffer) {
-    void* return_value = NULL;
-    if(!empty(buffer)) {
-        return_value = buffer->tail->data;
-        if(buffer->tail->prev != NULL) {
-            buffer_node_t* tmp = buffer->tail->prev;
-            free(buffer->tail);
-            buffer->tail = tmp;
-            buffer->tail->next = NULL;
-        } else {
-            free(buffer->tail);
-            buffer->tail = NULL;
-            buffer->head = NULL;
-        }
-    }
-    return return_value;
-}
+void* dequeue(buffer_t* const buffer);
 
-buffer_t* get_buffer() {
-    buffer_t* buffer = (buffer_t*) malloc(sizeof(buffer_t));
-    return buffer;
-}
+buffer_t* get_buffer();
 
-void empty_buffer(buffer_t* const buffer) {
-    if(!empty(buffer)) {
-        buffer_node_t* node = buffer->head;
-        while(node->next != NULL) {
-            buffer_node_t* tmp = node->next;
-            free(node);
-            node = tmp;
-        }
-        free(node);
-    }
-    buffer->head = NULL;
-    buffer->tail = NULL;
-}
+void empty_buffer(buffer_t* const buffer);
 
-void destroy_buffer(buffer_t* const buffer) {
-    empty_buffer(buffer);
-    free(buffer);
-}
+void destroy_buffer(buffer_t* const buffer);
 
-iterator* get_iterator(const buffer_t* const buffer) {
-    iterator* iter = NULL;
-    if(!empty(buffer)) {
-        iter = (iterator*) malloc(sizeof(iterator));
-        if(iter != NULL) {
-            iter->next = buffer->tail;
-        }
-    }
-    return iter;
-}
+iterator* get_iterator(const buffer_t* const buffer);
 
-void destroy_iterator(iterator* const iter) {
-    free(iter);
-}
+void destroy_iterator(iterator* const iter);
 
 //going direction tail to head, first element at tail
-buffer_node_t* next(iterator* const iter) {
-    buffer_node_t* return_value = NULL;
-    if(iter->next != NULL) {
-        buffer_node_t* tmp = iter->next;
-        iter->next = tmp->prev; //iterator goes backwards
-        return_value = tmp;
-    }
-    return return_value;
-}
+buffer_node_t* next(iterator* const iter);
 
-void print_buffer(buffer_t* const buffer) {
-    iterator iter = {buffer->tail};
-    if(&iter != NULL) {
-        while(iter.next != NULL) {
-            printf("%p\n", next(&iter)->data);
-        }
-    }
-}
+void print_buffer(buffer_t* const buffer);
+
 
 #endif

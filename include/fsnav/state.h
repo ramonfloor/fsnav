@@ -7,43 +7,25 @@
 #include <fsnav/buffer.h>
 #include <fsnav/tree.h>
 
-
 #define MAX_PATH_SIZE 4096
 #define MAX_NAME_SIZE 256
+
+typedef struct tree_node tree_node_t;
 
 typedef struct pstate {
     char cwd_path[MAX_PATH_SIZE];
     char cwd_name[MAX_NAME_SIZE];
     buffer_t* dir_list;
     buffer_node_t* cursor; //saves the currently selected directory, when changing directory this must be set to tail node of buffer
+    tree_node_t* tree_cursor; //allows us to easily load the parent
 } pstate_t;
 
-pstate_t* mk_state() {
-    pstate_t* s = (pstate_t*) malloc(sizeof(pstate_t));
-    if(s != NULL) {
-        buffer_t* b = get_buffer();
-        if(b != NULL) {
-            s->dir_list = b;
-        } else {
-            free(s);
-            s = NULL;
-        }
-    }
-    return s;
-}
+pstate_t* mk_state();
 
-void destroy_state(pstate_t* s) {
-    destroy_buffer(s->dir_list);
-    free(s);
-}
+void destroy_state(pstate_t* s);
 
-void set_name(pstate_t* state, char* cwd) {
-    //memset(state->cwd_name, 0, MAX_NAME_SIZE);
-    memcpy(state->cwd_name, cwd, MAX_NAME_SIZE - 1); //last character has to be '\0'
-}
+void set_name(pstate_t* state, char* cwd);
 
-void set_path(pstate_t* state, char* parent, char* cwd) {
-
-}
+void set_path(pstate_t* state, char* parent, char* cwd);
 
 #endif

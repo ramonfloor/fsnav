@@ -8,13 +8,13 @@
 #include <fsnav/buffer.h>
 #include <fsnav/directory.h>
 #include <fsnav/io.h>
-
 #include <fsnav/term.h>
 #include <fsnav/state.h>
+#include <fsnav/core.h>
 
-sem_t buffer_lock;
 
 int main() {
-
+    init();
+    destroy_all();
     return EXIT_SUCCESS;
 }

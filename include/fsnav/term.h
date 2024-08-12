@@ -11,10 +11,12 @@
 
 #include <termios.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include <fsnav/buffer.h>
 #include <fsnav/tree.h>
 #include <fsnav/enum.h>
+#include <fsnav/state.h>
 
 /*=======================*/
 /* General screen macros */
@@ -65,15 +67,15 @@
 #define ITALIC "\033[3m"
 
 
-void mv_crs(int line, int collumn) {
-    printf(ESC "%d;%dH", line, collumn);
-}
+void mv_crs(int line, int collumn);
+/*
+    Initialize screen
+*/
+bool init_scr();
 
 /*
     Draw next state to the screen
 */
-void update_scr() {
-
-}
+void update_scr();
 
 #endif
