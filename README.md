@@ -32,3 +32,13 @@ From build directory run:
 $ sudo ./fsnav
 ```
 Since keyboard input is read directly from ```/dev/input/eventX``` you have to sudo.
+
+## Controls
+Controls are straightforward.\
+<kbd>↑</kbd> 
+<kbd>↓</kbd>
+Move cursor up and down in the current directory\
+<kbd>→</kbd>
+Change to the marked directory\
+<kbd>←</kbd>
+Go back to parent directory
