@@ -12,6 +12,8 @@
 #include <termios.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <pthread.h>
+#include <semaphore.h>
 
 #include <fsnav/buffer.h>
 #include <fsnav/tree.h>
@@ -23,6 +25,8 @@
 /*=======================*/
 
 #define RESET "\033[0m"
+#define HIDE_CURS "\033[?25l"
+#define SHOW_CURS "\033[?25h"
 
 /*========================*/
 /* Macros cursor movement */
@@ -68,6 +72,9 @@
 
 
 void mv_crs(int line, int collumn);
+
+void reset_term();
+
 /*
     Initialize screen
 */
@@ -77,5 +84,7 @@ bool init_scr();
     Draw next state to the screen
 */
 void update_scr();
+
+void key_handler();
 
 #endif

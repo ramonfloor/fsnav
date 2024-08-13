@@ -6,11 +6,12 @@
 #include <stdbool.h>
 #include <linux/input.h>
 #include <fcntl.h>
+#include <pthread.h>
 #include <semaphore.h>
 
 #include <fsnav/buffer.h>
 
-#define DEVICE "/dev/input/event6"
+#define DEVICE "/dev/input/event4"
 
 /*
     Initialise semaphore

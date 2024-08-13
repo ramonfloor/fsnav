@@ -12,7 +12,12 @@ bool enqueue(buffer_t* const buffer, void* data, size_t size) {
         node->prev = NULL;
         node->prev = NULL;
         node->data = malloc(size);
-        memcpy(node->data, data, size);
+        if(node->data == NULL) {
+            exit(1);
+        }
+        for(size_t i = 0; i < size; i++) {
+            *(char*)(node->data + i) = *(char*)(data + i);
+        }
         if(empty(buffer)) {
             node->next = NULL;
             buffer->head = node;
@@ -33,7 +38,6 @@ void* dequeue(buffer_t* const buffer) {
         return_value = buffer->tail->data;
         if(buffer->tail->prev != NULL) {
             buffer_node_t* tmp = buffer->tail->prev;
-            free(buffer->tail->data);
             free(buffer->tail);
             buffer->tail = tmp;
             buffer->tail->next = NULL;
@@ -56,19 +60,9 @@ buffer_t* get_buffer() {
 }
 
 void empty_buffer(buffer_t* const buffer) {
-    if(!empty(buffer)) {
-        buffer_node_t* node = buffer->head;
-        while(node->next != NULL) {
-            buffer_node_t* tmp = node->next;
-            free(node->data);
-            free(node);
-            node = tmp;
-        }
-        free(node->data);
-        free(node);
+    while(!empty(buffer)) {
+        free(dequeue(buffer));
     }
-    buffer->head = NULL;
-    buffer->tail = NULL;
 }
 
 void destroy_buffer(buffer_t* const buffer) {

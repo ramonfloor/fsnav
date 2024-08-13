@@ -46,5 +46,4 @@ buffer_node_t* next(iterator* const iter);
 
 void print_buffer(buffer_t* const buffer);
 
-
 #endif

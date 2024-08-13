@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include <threads.h>
+#include <pthread.h>
 #include <semaphore.h>
 
 #include <fsnav/state.h>

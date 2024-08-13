@@ -79,7 +79,7 @@ bool init() {
     tree->root = root_nd;
     
     // init semaphores
-    sem_init(ctrl_lock, 0, 1);
+    sem_init(ctrl_lock, 0, 0);
 
     init_scr(glob_state);
 
