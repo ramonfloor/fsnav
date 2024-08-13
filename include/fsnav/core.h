@@ -16,6 +16,7 @@
 #include <fsnav/tree.h>
 #include <fsnav/io.h>
 #include <fsnav/directory.h>
+#include <fsnav/enum.h>
 
 #define ROOT "/"
 
@@ -25,5 +26,7 @@
 bool init();
 
 void destroy_all();
+
+bool update_state(enum KEY key);
 
 #endif

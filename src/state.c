@@ -3,6 +3,7 @@
 pstate_t* mk_state() {
     pstate_t* s = (pstate_t*) malloc(sizeof(pstate_t));
     if(s != NULL) {
+        s->term_curs = 0;
         s->cursor = NULL;
         memset(s->cwd_name, 0, sizeof(s->cwd_name));
         memset(s->cwd_path, 0, sizeof(s->cwd_path));
@@ -19,9 +20,9 @@ void destroy_state(pstate_t* s) {
     free(s);
 }
 
-void set_name(pstate_t* state, char* cwd) {
+void set_name(pstate_t* state, char* cwd, size_t size) {
     memset(state->cwd_name, 0, MAX_NAME_SIZE);
-    memcpy(state->cwd_name, cwd, strlen(cwd)); //last character has to be '\0'
+    memcpy(state->cwd_name, cwd, size); //last character has to be '\0'
 }
 
 void set_path(pstate_t* state, char* parent, char* cwd) {
@@ -30,8 +31,11 @@ void set_path(pstate_t* state, char* parent, char* cwd) {
     char tmp2[MAX_PATH_SIZE];
     if(cwd != NULL) {
         strcpy(tmp2, cwd);
-        strcat(tmp1, "/");
+        if(!strcmp(tmp2, "/")) {
+            strcat(tmp1, "/");
+        }
         strcat(tmp1, tmp2);
+        strcat(tmp1, "/");
     }
     memcpy(state->cwd_path, tmp1, MAX_PATH_SIZE);
 }

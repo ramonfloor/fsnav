@@ -14,11 +14,13 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <termios.h>
 
 #include <fsnav/buffer.h>
 #include <fsnav/tree.h>
 #include <fsnav/enum.h>
 #include <fsnav/state.h>
+#include <fsnav/core.h>
 
 /*=======================*/
 /* General screen macros */
@@ -49,7 +51,8 @@
 /* Macros output units */
 /*=====================*/
 
-#define VERT_UNIT "\n|"
+#define NEWLINE "\n"
+#define VERT_UNIT "|"
 #define HOR_UNIT "__ "
 #define COMMAND ">>> "
 

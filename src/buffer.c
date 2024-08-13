@@ -10,7 +10,8 @@ bool enqueue(buffer_t* const buffer, void* data, size_t size) {
     buffer_node_t* node = (buffer_node_t*) malloc(sizeof(buffer_node_t));
     if(!(node == NULL)) {
         node->prev = NULL;
-        node->prev = NULL;
+        node->next = NULL;
+        node->size = size;
         node->data = malloc(size);
         if(node->data == NULL) {
             exit(1);

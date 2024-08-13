@@ -11,7 +11,8 @@
 
 #include <fsnav/buffer.h>
 
-#define DEVICE "/dev/input/event4"
+//#define DEVICE "/dev/input/event0"
+#define DEVICE "/dev/input/event6"
 
 /*
     Initialise semaphore

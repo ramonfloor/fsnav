@@ -50,17 +50,15 @@ void destroy_tree(state_tree_t* tree) {
     }
 }
 
-bool append(tree_node_t* prnt, pstate_t* state) {
-    bool success = false;
+tree_node_t* append(tree_node_t* prnt, pstate_t* state) {
     tree_node_t* insrt = get_node();
     if(insrt != NULL) {
         insrt->parent = prnt;
         insrt->p_state = state;
         prnt->children[prnt->num_children] = insrt;
         prnt->num_children++;
-        success = true;
     }
-    return success;
+    return insrt;
 }
 
 void hlp_trv(tree_node_t* node) {
@@ -81,14 +79,16 @@ void pst_ord_trv(state_tree_t* tree) {
     }
 }
 
-bool search_state(tree_node_t* node, char* dir) {
-    int ret = -1;
-    for(int i = 0; i < MAX_SUBDIR; i++) {
+pstate_t* search_state(tree_node_t* node, char* dir) {
+    pstate_t* ret = NULL;
+    int i = 0;
+    while(node->children[i] != NULL) {
         char* tmp = node->children[i]->p_state->cwd_name;
         if(!strcmp(tmp, dir)) {
-            ret = i;
+            ret = node->children[i]->p_state;
             break;
         }
+        ++i;
     }
     return ret;
 }

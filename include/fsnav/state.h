@@ -18,13 +18,14 @@ typedef struct pstate {
     buffer_t* dir_list;
     buffer_node_t* cursor; //saves the currently selected directory, when changing directory this must be set to tail node of buffer
     tree_node_t* tree_cursor; //allows us to easily load the parent
+    int term_curs;
 } pstate_t;
 
 pstate_t* mk_state();
 
 void destroy_state(pstate_t* s);
 
-void set_name(pstate_t* state, char* cwd);
+void set_name(pstate_t* state, char* cwd, size_t size);
 
 void set_path(pstate_t* state, char* parent, char* cwd);
 

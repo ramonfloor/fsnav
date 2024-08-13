@@ -45,7 +45,7 @@ void destroy_tree(state_tree_t* tree);
     Append a program state to the tree by an enqueue to the children buffer.
     CAREFUL: This is not a normal insert operation of a tree. 
 */
-bool append(tree_node_t* prnt, pstate_t* state);
+tree_node_t* append(tree_node_t* prnt, pstate_t* state);
 
 void hlp_trv(tree_node_t* node);
 
@@ -55,6 +55,6 @@ void pst_ord_trv(state_tree_t* tree);
     Sequentally search through the children of node, if one of the child nodes
     contains pstate with cwd equal to dir, return true, else false. 
 */
-bool search_state(tree_node_t* node, char* dir);
+pstate_t* search_state(tree_node_t* node, char* dir);
 
 #endif
