@@ -82,11 +82,6 @@ void reset_term();
 */
 bool init_scr();
 
-/*
-    Draw next state to the screen
-*/
-void update_scr(enum KEY key);
-
 void key_handler();
 
 #endif
