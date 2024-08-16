@@ -3,7 +3,7 @@
 
 tree_node_t* get_node() {
     tree_node_t* node = (tree_node_t*) malloc(sizeof(tree_node_t));
-    if(node != NULL) {
+    if(node) {
         memset(node->children, 0, MAX_SUBDIR);
         node->num_children = 0;
         node->p_state = NULL;
@@ -22,7 +22,7 @@ state_tree_t* get_tree() {
 }
 
 void empty_tree_helper(tree_node_t* node) {
-    if(node != NULL) {
+    if(node) {
         if(node->num_children > 0) {
             for(int i = 0; i < node->num_children; i++) {
                 empty_tree_helper(node->children[i]);
@@ -35,16 +35,16 @@ void empty_tree_helper(tree_node_t* node) {
 }
 
 void empty_tree(state_tree_t* tree) {
-    if(tree != NULL) {
+    if(tree) {
         tree_node_t* node = tree->root;
-        if(node != NULL) {
+        if(node) {
             empty_tree_helper(node);
         }
     }
 }
 
 void destroy_tree(state_tree_t* tree) {
-    if(tree != NULL) {
+    if(tree) {
         empty_tree(tree);
         free(tree);
     }
@@ -52,7 +52,7 @@ void destroy_tree(state_tree_t* tree) {
 
 tree_node_t* append(tree_node_t* prnt, pstate_t* state) {
     tree_node_t* insrt = get_node();
-    if(insrt != NULL) {
+    if(insrt) {
         insrt->parent = prnt;
         insrt->p_state = state;
         prnt->children[prnt->num_children] = insrt;
@@ -62,7 +62,7 @@ tree_node_t* append(tree_node_t* prnt, pstate_t* state) {
 }
 
 void hlp_trv(tree_node_t* node) {
-    if(node != NULL) {
+    if(node) {
         if(node->num_children > 0) {
             for(int i = 0; i < node->num_children; i++) {
                 hlp_trv(node->children[i]);
@@ -74,7 +74,7 @@ void hlp_trv(tree_node_t* node) {
 }
 
 void pst_ord_trv(state_tree_t* tree) {
-    if(tree != NULL) {
+    if(tree) {
         hlp_trv(tree->root);
     }
 }
@@ -82,7 +82,7 @@ void pst_ord_trv(state_tree_t* tree) {
 pstate_t* search_state(tree_node_t* node, char* dir) {
     pstate_t* ret = NULL;
     int i = 0;
-    while(node->children[i] != NULL) {
+    while(node->children[i]) {
         char* tmp = node->children[i]->p_state->cwd_name;
         if(!strcmp(tmp, dir)) {
             ret = node->children[i]->p_state;

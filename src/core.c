@@ -12,15 +12,10 @@ buffer_t* ctrl_buffer = NULL;
 extern sem_t* ctrl_lock;
 
 void destroy_all() {
-    if(!ctrl_buffer) {
-        destroy_buffer(ctrl_buffer);
-    }
-    if(!ctrl_lock) {
-        destroy_io();
-    }
-    if(!tree) {
-        destroy_tree(tree);
-    }
+    destroy_buffer(ctrl_buffer);
+    destroy_io();
+    destroy_tree(tree);
+    
 }
 
 bool init() {
@@ -39,14 +34,15 @@ bool init() {
     set_name(glob_state, ROOT, 1);
     set_path(glob_state, ROOT, NULL);
     glob_state->dir_list = dir_list;
-    list_directories(glob_state->dir_list, ROOT);
+    if(!list_directories(glob_state->dir_list, ROOT)) {
+        return false;
+    }
     glob_state->cursor = glob_state->dir_list->tail;
     glob_state->term_curs = 2;
 
     // setting up the tree
     tree_node_t* root_nd = get_node();
-    if(root_nd == NULL) {
-        destroy_all();
+    if(!root_nd) {
         return false;
     }
 
@@ -97,6 +93,8 @@ bool update_state(enum KEY key) {
                 buffer_t* new_dir_list = get_buffer();
                 
                 if(!new_dir_list || !new_state) {
+                    destroy_state(new_state);
+                    destroy_buffer(new_dir_list);
                     return false;
                 }
 
@@ -106,12 +104,19 @@ bool update_state(enum KEY key) {
                 set_path(new_state, glob_state->cwd_path, new_state->cwd_name);
 
                 new_state->dir_list = new_dir_list;
-                list_directories(new_state->dir_list, new_state->cwd_path);
+                if(!list_directories(new_state->dir_list, new_state->cwd_path)) {
+                    // maybe add some sound here!
+                    destroy_state(new_state);
+                    destroy_buffer(new_dir_list);
+                    return false;
+                }
                 new_state->cursor = new_state->dir_list->tail;
                 new_state->tree_cursor = append(glob_state->tree_cursor, new_state);
 
                 if(!new_state->tree_cursor) {
-                    exit(1);
+                    destroy_state(new_state);
+                    destroy_buffer(new_dir_list);
+                    return false;
                 }
             }
             glob_state = new_state;

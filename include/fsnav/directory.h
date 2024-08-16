@@ -3,9 +3,10 @@
 
 #include <dirent.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <fsnav/buffer.h>
 
-void list_directories(buffer_t* dir_list, const char* pathname);
+bool list_directories(buffer_t* dir_list, const char* pathname);
 
 #endif

@@ -10,7 +10,9 @@ bool init_io() {
 }
 
 void destroy_io() {
-    free(ctrl_lock);
+    if(ctrl_lock) {
+        free(ctrl_lock);
+    }
 }
 
 void listen() {

@@ -1,7 +1,7 @@
 #include <fsnav/directory.h>
 
-
-void list_directories(buffer_t* dir_list, const char* pathname) {
+bool list_directories(buffer_t* dir_list, const char* pathname) {
+    bool ret = false;
     if(dir_list != NULL) {
         DIR* dir = opendir(pathname);
         if(dir != NULL) {
@@ -11,6 +11,8 @@ void list_directories(buffer_t* dir_list, const char* pathname) {
                 ent = readdir(dir);
             }
             closedir(dir);
+            ret = true;
         }
     }
+    return ret;
 }

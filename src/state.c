@@ -17,7 +17,9 @@ pstate_t* mk_state() {
     Remember to free members of s first! (buffer)
 */
 void destroy_state(pstate_t* s) {
-    free(s);
+    if(s){
+        free(s);
+    }
 }
 
 void set_name(pstate_t* state, char* cwd, size_t size) {

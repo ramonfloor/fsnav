@@ -61,14 +61,18 @@ buffer_t* get_buffer() {
 }
 
 void empty_buffer(buffer_t* const buffer) {
-    while(!empty(buffer)) {
-        free(dequeue(buffer));
+    if(buffer) {
+        while(!empty(buffer)) {
+            free(dequeue(buffer));
+        }
     }
 }
 
 void destroy_buffer(buffer_t* const buffer) {
-    empty_buffer(buffer);
-    free(buffer);
+    if(buffer) {
+        empty_buffer(buffer);
+        free(buffer);
+    }
 }
 
 iterator* get_iterator(const buffer_t* const buffer) {
@@ -104,4 +108,20 @@ void print_buffer(buffer_t* const buffer) {
             printf("%s\n", next(&iter)->data);
         }
     }
+}
+
+bool find_remove(buffer_t* buffer, void* data, size_t size) {
+    bool ret = false;
+    if(buffer && data) {
+        buffer_node_t* tmp = buffer->tail;
+        while(tmp != NULL) {
+            if(size != tmp->size) continue;
+            if(!memcmp(data, tmp->data, size)) {
+                ret = true;
+                break;
+            }
+            tmp = tmp->prev;
+        }
+    }
+    return ret;
 }
