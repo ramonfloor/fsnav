@@ -1,7 +1,7 @@
 # Important
-THIS PROJECT IS STILL IN DEVELOPMENT! PROGRAM WILL CRASH WHEN CERTAIN ACTIONS ARE PERFORMED! I am still working on some ideas, 
+THIS PROJECT IS STILL IN DEVELOPMENT! I am still working on some ideas, 
 this is merely the first version. Also this programm is most likely not portable. I run a Debian 12 machine, it works for me, but I
-cannot guarantee that it will work on your system.
+cannot guarantee that it will work on your system (it probably won't).
 
 # File system Navigator
 File system navigator for Linux. Allows efficient travelling through your file system with arrow keys in terminal.
