@@ -109,19 +109,3 @@ void print_buffer(buffer_t* const buffer) {
         }
     }
 }
-
-bool find_remove(buffer_t* buffer, void* data, size_t size) {
-    bool ret = false;
-    if(buffer && data) {
-        buffer_node_t* tmp = buffer->tail;
-        while(tmp != NULL) {
-            if(size != tmp->size) continue;
-            if(!memcmp(data, tmp->data, size)) {
-                ret = true;
-                break;
-            }
-            tmp = tmp->prev;
-        }
-    }
-    return ret;
-}

@@ -46,4 +46,6 @@ buffer_node_t* next(iterator* const iter);
 
 void print_buffer(buffer_t* const buffer);
 
+bool find_remove(buffer_t* buffer, void* data, size_t size);
+
 #endif
