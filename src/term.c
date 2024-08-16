@@ -7,13 +7,8 @@ extern sem_t* ctrl_lock;
 
 struct termios term;
 
-
-void mv_crs(int line, int collumn) {
-    printf(ESC "%d;%dH", line, collumn);
-}
-
 void reset_term() {
-    mv_crs(0,0);
+    MV_CURS(0,0);
     printf(ERS);
     term.c_lflag |= ECHO;
     tcsetattr(fileno(stdin), 0, &term);
@@ -22,7 +17,7 @@ void reset_term() {
 }
 
 void next_scr() {
-    mv_crs(0, 0);
+    MV_CURS(0, 0);
     printf(ERS);
 
     printf(BOLD RED "%s" RESET, glob_state->cwd_path);
@@ -37,7 +32,7 @@ void next_scr() {
         printf(NEWLINE VERT_UNIT HOR_UNIT"%s", temp->data);
         temp = temp->prev;
     }
-    mv_crs(glob_state->term_curs, 0);
+    MV_CURS(glob_state->term_curs, 0);
     fflush(stdout);
 }
 
@@ -54,17 +49,17 @@ bool init_scr() {
 void update_scr(enum KEY key) {
     switch(key) {
         case UP:
-            mv_crs(glob_state->term_curs + 1, 0);
+            MV_CURS(glob_state->term_curs + 1, 0);
             printf(ERS_LN);
             printf(VERT_UNIT HOR_UNIT "%s", glob_state->cursor->prev->data);
-            mv_crs(glob_state->term_curs, 0);
+            MV_CURS(glob_state->term_curs, 0);
             printf(BOLD RED VERT_UNIT HOR_UNIT "%s" RESET, glob_state->cursor->data);
             break;
         case DOWN:
-            mv_crs(glob_state->term_curs - 1, 0);
+            MV_CURS(glob_state->term_curs - 1, 0);
             printf(ERS_LN);
             printf(BOLD RED VERT_UNIT RESET HOR_UNIT "%s", glob_state->cursor->next->data);
-            mv_crs(glob_state->term_curs, 0);
+            MV_CURS(glob_state->term_curs, 0);
             printf(BOLD RED VERT_UNIT HOR_UNIT "%s" RESET, glob_state->cursor->data);
             break;
     }

@@ -1,6 +1,5 @@
 #include <fsnav/core.h>
 
-
 /*==================*/
 /* Global variables */
 /*==================*/
@@ -13,53 +12,30 @@ buffer_t* ctrl_buffer = NULL;
 extern sem_t* ctrl_lock;
 
 void destroy_all() {
-    if(ctrl_buffer != NULL) {
+    if(!ctrl_buffer) {
         destroy_buffer(ctrl_buffer);
     }
-    if(ctrl_lock != NULL) {
+    if(!ctrl_lock) {
         destroy_io();
     }
-    if(tree != NULL) {
+    if(!tree) {
         destroy_tree(tree);
     }
 }
 
 bool init() {
     glob_state = mk_state();
-    if(glob_state == NULL) {
-        return false;
-    }
     buffer_t* dir_list = get_buffer();
-    if(dir_list == NULL) {
-        destroy_state(glob_state);
-        return false;
-    }
-
     init_io();
-    if(ctrl_lock == NULL) {
-        destroy_buffer(glob_state->dir_list);
-        destroy_state(glob_state);
-        return false;
-    }
-        
     ctrl_buffer = get_buffer();
-    if(ctrl_buffer == NULL) {
-        destroy_buffer(glob_state->dir_list);
-        destroy_io();
-        destroy_state(glob_state);
-        return false;
-    }
-
     tree = get_tree();
-    if(tree == NULL) {
-        destroy_buffer(glob_state->dir_list);
-        destroy_buffer(ctrl_buffer);
-        destroy_io();
-        destroy_state(glob_state);
+
+    if(!glob_state || !dir_list || !ctrl_lock || !ctrl_buffer || !tree) {
+        fprintf(stderr, "Init failed. No memory.\n");
         return false;
     }
 
-    // setting starting directory to root
+    // setting starting directory to root, init glob_state
     set_name(glob_state, ROOT, 1);
     set_path(glob_state, ROOT, NULL);
     glob_state->dir_list = dir_list;
@@ -115,11 +91,14 @@ bool update_state(enum KEY key) {
             break;
         
         case RIGHT:
-            //NOT SAFE YET, MALLOC MIGHT FAIL ===> SEGFAULT
             pstate_t* new_state = search_state(glob_state->tree_cursor, glob_state->cursor->data);
             if(new_state == NULL) {
                 new_state = mk_state();
                 buffer_t* new_dir_list = get_buffer();
+                
+                if(!new_dir_list || !new_state) {
+                    return false;
+                }
 
                 char* cwd = glob_state->cursor->data;
                 size_t size = glob_state->cursor->size;
@@ -128,12 +107,10 @@ bool update_state(enum KEY key) {
 
                 new_state->dir_list = new_dir_list;
                 list_directories(new_state->dir_list, new_state->cwd_path);
-                print_buffer(new_state->dir_list);
                 new_state->cursor = new_state->dir_list->tail;
                 new_state->tree_cursor = append(glob_state->tree_cursor, new_state);
-                new_state->term_curs = 2;
 
-                if(new_state->tree_cursor == NULL) {
+                if(!new_state->tree_cursor) {
                     exit(1);
                 }
             }

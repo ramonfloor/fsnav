@@ -29,6 +29,7 @@
 #define RESET "\033[0m"
 #define HIDE_CURS "\033[?25l"
 #define SHOW_CURS "\033[?25h"
+#define MV_CURS(l,c) printf(ESC "%d;%dH", l, c)
 
 /*========================*/
 /* Macros cursor movement */
@@ -74,8 +75,6 @@
 #define ITALIC "\033[3m"
 
 
-void mv_crs(int line, int collumn);
-
 void reset_term();
 
 /*
@@ -86,7 +85,7 @@ bool init_scr();
 /*
     Draw next state to the screen
 */
-void update_scr();
+void update_scr(enum KEY key);
 
 void key_handler();
 

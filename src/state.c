@@ -3,7 +3,7 @@
 pstate_t* mk_state() {
     pstate_t* s = (pstate_t*) malloc(sizeof(pstate_t));
     if(s != NULL) {
-        s->term_curs = 0;
+        s->term_curs = 2;
         s->cursor = NULL;
         memset(s->cwd_name, 0, sizeof(s->cwd_name));
         memset(s->cwd_path, 0, sizeof(s->cwd_path));
