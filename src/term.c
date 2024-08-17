@@ -20,19 +20,19 @@ void next_scr() {
     MV_CURS(0, 0);
     printf(ERS);
 
-    printf(BOLD RED "%s" RESET, glob_state->cwd_path);
-    buffer_node_t* temp = glob_state->dir_list->tail;
-    while(temp != glob_state->cursor) {
-        printf(BOLD RED NEWLINE VERT_UNIT RESET HOR_UNIT"%s", temp->data);
-        temp = temp->prev;
+    printf(BOLD YELLOW "%s" RESET, glob_state->_cwd_path);
+    buffer_node_t* temp = glob_state->_dir_list->_tail;
+    while(temp != glob_state->_cursor) {
+        printf(BOLD YELLOW NEWLINE VERT_UNIT RESET HOR_UNIT"%s", temp->_data);
+        temp = temp->_prev;
     }
-    printf(BOLD RED NEWLINE VERT_UNIT HOR_UNIT "%s" RESET, temp->data);
-    temp = temp->prev;
+    printf(BOLD YELLOW NEWLINE VERT_UNIT HOR_UNIT "%s" RESET, temp->_data);
+    temp = temp->_prev;
     while(temp != NULL) {
-        printf(NEWLINE VERT_UNIT HOR_UNIT"%s", temp->data);
-        temp = temp->prev;
+        printf(NEWLINE VERT_UNIT HOR_UNIT"%s", temp->_data);
+        temp = temp->_prev;
     }
-    MV_CURS(glob_state->term_curs, 0);
+    MV_CURS(glob_state->_term_curs, 0);
     fflush(stdout);
 }
 
@@ -49,18 +49,18 @@ bool init_scr() {
 void update_scr(enum KEY key) {
     switch(key) {
         case UP:
-            MV_CURS(glob_state->term_curs + 1, 0);
+            MV_CURS(glob_state->_term_curs + 1, 0);
             printf(ERS_LN);
-            printf(VERT_UNIT HOR_UNIT "%s", glob_state->cursor->prev->data);
-            MV_CURS(glob_state->term_curs, 0);
-            printf(BOLD RED VERT_UNIT HOR_UNIT "%s" RESET, glob_state->cursor->data);
+            printf(VERT_UNIT HOR_UNIT "%s", glob_state->_cursor->_prev->_data);
+            MV_CURS(glob_state->_term_curs, 0);
+            printf(BOLD YELLOW VERT_UNIT HOR_UNIT "%s" RESET, glob_state->_cursor->_data);
             break;
         case DOWN:
-            MV_CURS(glob_state->term_curs - 1, 0);
+            MV_CURS(glob_state->_term_curs - 1, 0);
             printf(ERS_LN);
-            printf(BOLD RED VERT_UNIT RESET HOR_UNIT "%s", glob_state->cursor->next->data);
-            MV_CURS(glob_state->term_curs, 0);
-            printf(BOLD RED VERT_UNIT HOR_UNIT "%s" RESET, glob_state->cursor->data);
+            printf(BOLD YELLOW VERT_UNIT RESET HOR_UNIT "%s", glob_state->_cursor->_next->_data);
+            MV_CURS(glob_state->_term_curs, 0);
+            printf(BOLD YELLOW VERT_UNIT HOR_UNIT "%s" RESET, glob_state->_cursor->_data);
             break;
     }
     fflush(stdout);

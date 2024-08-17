@@ -20,14 +20,14 @@ typedef struct pstate pstate_t;
 #define MAX_SUBDIR 65000
 
 typedef struct tree_node {
-    struct tree_node* children[MAX_SUBDIR];
-    struct tree_node* parent;
-    pstate_t* p_state;
-    int num_children;
+    struct tree_node* _children[MAX_SUBDIR];
+    struct tree_node* _parent;
+    pstate_t* _p_state;
+    int _num_children;
 } tree_node_t;
 
 typedef struct state_tree {
-    tree_node_t* root;
+    tree_node_t* _root;
 } state_tree_t;
 
 tree_node_t* get_node();

@@ -9,20 +9,16 @@
 
 
 typedef struct buffer_node {
-    struct buffer_node* next;
-    struct buffer_node* prev;
-    void* data;
-    size_t size;
+    struct buffer_node* _next;
+    struct buffer_node* _prev;
+    void* _data;
+    size_t _size;
 } buffer_node_t;
 
 typedef struct buffer {
-    buffer_node_t* head;
-    buffer_node_t* tail;
+    buffer_node_t* _head;
+    buffer_node_t* _tail;
 } buffer_t;
-
-typedef struct iterator {
-    buffer_node_t* next;
-} iterator;
 
 
 bool empty(const buffer_t* const buffer);
@@ -37,15 +33,6 @@ void empty_buffer(buffer_t* const buffer);
 
 void destroy_buffer(buffer_t* const buffer);
 
-iterator* get_iterator(const buffer_t* const buffer);
-
-void destroy_iterator(iterator* const iter);
-
-//going direction tail to head, first element at tail
-buffer_node_t* next(iterator* const iter);
-
 void print_buffer(buffer_t* const buffer);
-
-bool find_remove(buffer_t* buffer, void* data, size_t size);
 
 #endif

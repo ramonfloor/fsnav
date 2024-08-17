@@ -33,12 +33,12 @@ bool init() {
     // setting starting directory to root, init glob_state
     set_name(glob_state, ROOT, 1);
     set_path(glob_state, ROOT, NULL);
-    glob_state->dir_list = dir_list;
-    if(!list_directories(glob_state->dir_list, ROOT)) {
+    glob_state->_dir_list = dir_list;
+    if(!list_directories(glob_state->_dir_list, ROOT)) {
         return false;
     }
-    glob_state->cursor = glob_state->dir_list->tail;
-    glob_state->term_curs = 2;
+    glob_state->_cursor = glob_state->_dir_list->_tail;
+    glob_state->_term_curs = 2;
 
     // setting up the tree
     tree_node_t* root_nd = get_node();
@@ -46,11 +46,11 @@ bool init() {
         return false;
     }
 
-    root_nd->p_state = glob_state;
-    root_nd->parent = NULL;
+    root_nd->_p_state = glob_state;
+    root_nd->_parent = NULL;
 
-    tree->root = root_nd;
-    glob_state->tree_cursor = root_nd;
+    tree->_root = root_nd;
+    glob_state->_tree_cursor = root_nd;
 
     init_glob_state = glob_state;
     
@@ -66,28 +66,28 @@ bool update_state(enum KEY key) {
     bool u = false;
     switch(key) {
         case UP:
-            if(glob_state->cursor != glob_state->dir_list->tail) {
-                glob_state->cursor = glob_state->cursor->next;
-                glob_state->term_curs--;
+            if(glob_state->_cursor != glob_state->_dir_list->_tail) {
+                glob_state->_cursor = glob_state->_cursor->_next;
+                glob_state->_term_curs--;
                 u = true;
             }
             break;
         case DOWN:
-            if(glob_state->cursor != glob_state->dir_list->head) {
-                glob_state->cursor = glob_state->cursor->prev;
-                glob_state->term_curs++;
+            if(glob_state->_cursor != glob_state->_dir_list->_head) {
+                glob_state->_cursor = glob_state->_cursor->_prev;
+                glob_state->_term_curs++;
                 u = true;
             }
             break;
         case LEFT:
             if(glob_state != init_glob_state) {
-                glob_state = glob_state->tree_cursor->parent->p_state;
+                glob_state = glob_state->_tree_cursor->_parent->_p_state;
                 u = true;
             }
             break;
         
         case RIGHT:
-            pstate_t* new_state = search_state(glob_state->tree_cursor, glob_state->cursor->data);
+            pstate_t* new_state = search_state(glob_state->_tree_cursor, glob_state->_cursor->_data);
             if(new_state == NULL) {
                 new_state = mk_state();
                 buffer_t* new_dir_list = get_buffer();
@@ -98,22 +98,22 @@ bool update_state(enum KEY key) {
                     return false;
                 }
 
-                char* cwd = glob_state->cursor->data;
-                size_t size = glob_state->cursor->size;
+                char* cwd = glob_state->_cursor->_data;
+                size_t size = glob_state->_cursor->_size;
                 set_name(new_state, cwd, size);
-                set_path(new_state, glob_state->cwd_path, new_state->cwd_name);
+                set_path(new_state, glob_state->_cwd_path, new_state->_cwd_name);
 
-                new_state->dir_list = new_dir_list;
-                if(!list_directories(new_state->dir_list, new_state->cwd_path)) {
+                new_state->_dir_list = new_dir_list;
+                if(!list_directories(new_state->_dir_list, new_state->_cwd_path)) {
                     // maybe add some sound here!
                     destroy_state(new_state);
                     destroy_buffer(new_dir_list);
                     return false;
                 }
-                new_state->cursor = new_state->dir_list->tail;
-                new_state->tree_cursor = append(glob_state->tree_cursor, new_state);
+                new_state->_cursor = new_state->_dir_list->_tail;
+                new_state->_tree_cursor = append(glob_state->_tree_cursor, new_state);
 
-                if(!new_state->tree_cursor) {
+                if(!new_state->_tree_cursor) {
                     destroy_state(new_state);
                     destroy_buffer(new_dir_list);
                     return false;
