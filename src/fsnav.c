@@ -19,11 +19,7 @@ int main() {
     
     int exit_msg = EXIT_FAILURE;
     if(init()) {
-        pthread_create(&t1, NULL, (void*)(void*)listen, NULL);
-        pthread_create(&t2, NULL, (void*)(void*)key_handler, NULL);
-
-        pthread_join(t1, NULL);
-        pthread_join(t2, NULL);
+        key_listener();
         reset_term();
         exit_msg = EXIT_SUCCESS;
     }

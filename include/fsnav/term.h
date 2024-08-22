@@ -53,8 +53,9 @@
 /*=====================*/
 
 #define NEWLINE "\n"
-#define VERT_UNIT "|"
-#define HOR_UNIT "__ "
+#define VERT_UNIT "\u2502 "
+#define VERT_POINTER "\u2514"
+#define HOR_UNIT "\u2500\u2500 "
 #define COMMAND ">>> "
 
 /*===================*/
@@ -82,6 +83,6 @@ void reset_term();
 */
 bool init_scr();
 
-void key_handler();
+void key_listener();
 
 #endif
